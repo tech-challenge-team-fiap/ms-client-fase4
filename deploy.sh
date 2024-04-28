@@ -3,25 +3,16 @@
 #############################################
 # Created database with dynamodb
 #############################################
-# shellcheck disable=SC1101
-#aws dynamodb create-table \
-#    --table-name clients \
-#    --attribute-definitions AttributeName=cpf,AttributeType=S \
-#    --key-schema AttributeName=cpf,KeyType=HASH \
-#    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-#    --endpoint-url ${AWS_DYNAMODB_ENDPOINT}
-#    --region ${AWS_REGION}
-#
-#echo "Created table in Dynamodb completed!"
+ shellcheck disable=SC1101
+aws dynamodb create-table \
+    --table-name clients \
+    --attribute-definitions AttributeName=cpf,AttributeType=S \
+    --key-schema AttributeName=cpf,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --endpoint-url ${AWS_DYNAMODB_ENDPOINT}
+    --region ${AWS_REGION}
 
-#############################################
-# Build and push Docker image to DockerHub
-#############################################
-
-docker build -t tech-challenge-client .
-docker tag tech-challenge-client jaircmendes/techchallenge:tcclient
-docker push jaircmendes/techchallenge:tcclient
-
+echo "Created table in Dynamodb completed!"
 
 #############################################
 # Deploy infrastructure using Terraform

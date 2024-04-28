@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "tcclient_task" {
     [
       {
         name : "tcclient-container",
-        image : "tc-client",
+        image : "jaircmendes/techchallenge:tcclient",
         cpu : 256,
         memory : 512,
         essential : true,
