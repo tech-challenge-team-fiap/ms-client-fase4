@@ -5,8 +5,8 @@ server:
 
 amazon:
   aws:
-    access-key:
-    secret-key:
-    region:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
     dynamodb:
-      endpoint: "http://localhost:8000"
+      endpoint: ${AWS_DYNAMODB_ENDPOINT}
