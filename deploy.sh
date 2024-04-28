@@ -9,8 +9,8 @@ aws dynamodb create-table \
     --attribute-definitions AttributeName=cpf,AttributeType=S \
     --key-schema AttributeName=cpf,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-    --endpoint-url "dynamodb.us-east-2.amazonaws.com"
-    --region "us-east-2"
+    --endpoint-url ${{ AWS_DYNAMODB_ENDPOINT }}
+    --region ${{ secrets.AWS_REGION }}
 
 echo "Created table in Dynamodb completed!"
 
@@ -19,9 +19,9 @@ echo "Created table in Dynamodb completed!"
 #############################################
 
 cd infra
-#terraform init
+terraform init
 terraform validate
 #terraform apply -auto-approve -var "aws_access_key=${AWS_ACCESS_KEY}" -var "aws_secret_key=${AWS_SECRET_KEY}"
-cd ..
+#cd ..
 
 echo "Deployment completed!"
