@@ -8,9 +8,12 @@ aws dynamodb create-table \
     --attribute-definitions AttributeName=cpf,AttributeType=S \
     --key-schema AttributeName=cpf,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-    --endpoint-url "${AWS_DYNAMODB_ENDPOINT}" \
-    --region "${AWS_REGION}"
+    --endpoint-url ${AWS_DYNAMODB_ENDPOINT} \
+    --region ${AWS_REGION}
 
+
+echo ${AWS_DYNAMODB_ENDPOINT}
+echo ${AWS_REGION}
 echo "Created table in DynamoDB completed!"
 
 
