@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: api-clients
     image: openjdk:17-jdk
     build:
       context: .
@@ -12,13 +13,23 @@ services:
       - mynetwork
     depends_on:
       - dynamodb
+    environment:
+      AWS_ACCESS_KEY: "your_access_key"
+      AWS_SECRET_KEY: "your_secret_key"
+      AWS_REGION: "us-east-2"
+      AWS_DYNAMODB_ENDPOINT: "http://dynamodb:8000"
 
   dynamodb:
+    container_name: dynamodb-database
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
     networks:
       - mynetwork
+    environment:
+      AWS_ACCESS_KEY: "your_access_key"
+      AWS_SECRET_KEY: "your_secret_key"
+      AWS_REGION: "us-east-2"
 
 networks:
   mynetwork:
