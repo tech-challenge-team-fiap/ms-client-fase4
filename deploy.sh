@@ -3,14 +3,14 @@
 #############################################
 # Created database with dynamodb
 #############################################
- shellcheck disable=SC1101
+#shellcheck disable=SC1101
 aws dynamodb create-table \
     --table-name clients \
     --attribute-definitions AttributeName=cpf,AttributeType=S \
     --key-schema AttributeName=cpf,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-    --endpoint-url ${{ AWS_DYNAMODB_ENDPOINT }}
-    --region ${{ secrets.AWS_REGION }}
+    --endpoint-url ${AWS_DYNAMODB_ENDPOINT}
+    --region ${AWS_REGION}
 
 echo "Created table in Dynamodb completed!"
 
