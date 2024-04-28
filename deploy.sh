@@ -1,18 +1,18 @@
 #!/bin/bash
 
-#############################################
-# Created database with dynamodb
-#############################################
 #shellcheck disable=SC1101
+
+# Define AWS Dynamodb endpoint and region if not already set and create DynamoDB table
 aws dynamodb create-table \
     --table-name clients \
     --attribute-definitions AttributeName=cpf,AttributeType=S \
     --key-schema AttributeName=cpf,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-    --endpoint-url ${AWS_DYNAMODB_ENDPOINT}
-    --region ${AWS_REGION}
+    --endpoint-url "${AWS_DYNAMODB_ENDPOINT}" \
+    --region "${AWS_REGION}"
 
-echo "Created table in Dynamodb completed!"
+echo "Created table in DynamoDB completed!"
+
 
 #############################################
 # Deploy infrastructure using Terraform
