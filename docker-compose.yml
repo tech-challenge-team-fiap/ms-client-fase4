@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    image: openjdk:17-jdk
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - dynamodb
+
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
