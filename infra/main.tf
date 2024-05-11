@@ -13,55 +13,6 @@ provider "aws" {
   region = "us-east-2"
 }
 
-# IAM Policies
-#resource "aws_iam_policy" "ecr_policy" {
-#  name        = "ECRCreateRepositoryPolicy"
-#  description = "Permits creation of repositories in ECR"
-#
-#  policy = jsonencode({
-#    Version = "2012-10-17",
-#    Statement = [
-#      {
-#        Effect = "Allow",
-#        Action = "ecr:CreateRepository",
-#        Resource = "*"
-#      }
-#    ]
-#  })
-#}
-
-#resource "aws_iam_policy" "ecs_policy" {
-#  name        = "ECSDescribeTaskDefinitionPolicy"
-#  description = "Permits describing task definitions in ECS"
-#
-#  policy = jsonencode({
-#    Version = "2012-10-17",
-#    Statement = [
-#      {
-#        Effect = "Allow",
-#        Action = "ecs:DescribeTaskDefinition",
-#        Resource = "*"
-#      }
-#    ]
-#  })
-#}
-#
-#resource "aws_iam_policy" "ec2_policy" {
-#  name        = "EC2CreateVpcPolicy"
-#  description = "Permits creation of VPCs in EC2"
-#
-#  policy = jsonencode({
-#    Version = "2012-10-17",
-#    Statement = [
-#      {
-#        Effect = "Allow",
-#        Action = "ec2:CreateVpc",
-#        Resource = "*"
-#      }
-#    ]
-#  })
-#}
-
 # Attach Policies to IAM User
 resource "aws_iam_user_policy_attachment" "ecr_policy_attachment" {
   user       = "jairmendes-dev"
