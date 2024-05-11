@@ -39,7 +39,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tech-challenge-client:latest
+          tags: ${{ secrets.AWS_ACCESS_KEY_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tech-challenge-client:latest
 
       - name: Echo the image digest
         run: echo "The image digest is ${{ steps.docker_build.outputs.digest }}"
