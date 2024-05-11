@@ -11,7 +11,7 @@ on:
       - main
       - develop
   workflow_run:
-    workflows: [ "Step Build and Test", "Check Quality with SonarCloud", "Docker Build and Push" ]
+    workflows: [ "Docker Build And Deploy to AWS ECR" ]
     types:
       - completed
 
@@ -24,7 +24,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-
+      - name: Check status workflow previous
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Worflow are sucess, next task"
+      - name: Other taks
+        run: echo "Starting next task"
       - name: Configuration AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:

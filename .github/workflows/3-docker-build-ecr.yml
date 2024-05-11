@@ -7,7 +7,7 @@ on:
       - develop
       - feature/*
   workflow_run:
-    workflows: [ "Step Build and Test", "Check Quality with SonarCloud" ]
+    workflows: [ "Check Quality with SonarCloud" ]
     types:
       - completed
 
@@ -18,7 +18,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: Check status workflow previous
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Worflow are sucess, next task"
+      - name: Other taks
+        run: echo "Starting next task"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
