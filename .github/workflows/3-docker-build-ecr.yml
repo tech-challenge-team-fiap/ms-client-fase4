@@ -3,6 +3,8 @@ name: Docker Build and Push
 on:
   push:
     branches:
+      - main
+      - develop
       - feature/*
   workflow_run:
     workflows: [ "Step Build and Test", "Check Quality with SonarCloud" ]
@@ -22,6 +24,8 @@ jobs:
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          region: ${{ secrets.AWS_REGION }}
 
       - name: Build and Push to AWS ECR
         id: docker_build
