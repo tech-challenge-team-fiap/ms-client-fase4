@@ -28,26 +28,26 @@ resource "aws_iam_user_policy_attachment" "ec2_policy_attachment" {
   user       = "jairmendes-dev"
   policy_arn = "arn:aws:iam::851725557582:policy/EC2CreateVpcPolicy"
 }
-
-# VPC Setting
-module "main_vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.5.3"
-
-  name            = "main_vpc"
-  cidr            = "10.0.0.0/16"
-  azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
-}
+#
+## VPC Setting
+#module "main_vpc" {
+#  source  = "terraform-aws-modules/vpc/aws"
+#  version = "5.5.3"
+#
+#  name            = "main_vpc"
+#  cidr            = "10.0.0.0/16"
+#  azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
+#  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+#  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+#
+#  enable_nat_gateway   = true
+#  single_nat_gateway   = true
+#  enable_dns_hostnames = true
+#}
 
 # ECR Setting
 resource "aws_ecr_repository" "tech_challenge" {
-  name                 = "tech-challenge-client"
+  name                 = "jaircmendes/techchallenge:tcclient"
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 
@@ -94,7 +94,7 @@ resource "aws_ecs_service" "tech_challenge_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = module.main_vpc.private_subnets
-    security_groups = [module.main_vpc.default_security_group_id]
+    subnets         = ["subnet-04715a6b7400f9757", "subnet-06f39bcc16f6bd4ce", "subnet-010e2a0f51a3d00bc"]
+    security_groups = ["sg-0edafd1e8b0f706e9"]
   }
 }
