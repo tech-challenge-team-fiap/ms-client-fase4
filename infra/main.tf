@@ -5,61 +5,112 @@ terraform {
       version = "5.40.0"
     }
   }
+
+  required_version = ">= 1.0.0"
 }
 
 provider "aws" {
   region = "us-east-2"
 }
 
-#VPC Setting
+# IAM Policies
+resource "aws_iam_policy" "ecr_policy" {
+  name        = "ECRCreateRepositoryPolicy"
+  description = "Permits creation of repositories in ECR"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ecr:CreateRepository",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ecs_policy" {
+  name        = "ECSDescribeTaskDefinitionPolicy"
+  description = "Permits describing task definitions in ECS"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ecs:DescribeTaskDefinition",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ec2_policy" {
+  name        = "EC2CreateVpcPolicy"
+  description = "Permits creation of VPCs in EC2"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ec2:CreateVpc",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach Policies to IAM User
+resource "aws_iam_user_policy_attachment" "ecr_policy_attachment" {
+  user       = "jairmendes-dev"
+  policy_arn = aws_iam_policy.ecr_policy.arn
+}
+
+resource "aws_iam_user_policy_attachment" "ecs_policy_attachment" {
+  user       = "jairmendes-dev"
+  policy_arn = aws_iam_policy.ecs_policy.arn
+}
+
+resource "aws_iam_user_policy_attachment" "ec2_policy_attachment" {
+  user       = "jairmendes-dev"
+  policy_arn = aws_iam_policy.ec2_policy.arn
+}
+
+# VPC Setting
 module "main_vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.5.3"
 
   name            = "main_vpc"
   cidr            = "10.0.0.0/16"
+  azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-  azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
-
-  tags = {
-    "kubernets.io/cluster/main-vpc" = "shared"
-  }
-
-  public_subnet_tags = {
-    "kubernets.io/cluster/main-vpc" = "shared"
-    "kubernets.io/role/elb"         = 1
-  }
-
-  private_subnet_tags = {
-    "kubernets.io/cluster/main-vpc"  = "shared"
-    "kubernets.io/role/internal-elb" = 1
-  }
-
 }
-#VPC Setting
 
-#ECR Setting
-resource "aws_ecr_repository" "tech-challenge" {
+# ECR Setting
+resource "aws_ecr_repository" "tech_challenge" {
   name                 = "tech-challenge-client"
   image_tag_mutability = "MUTABLE"
   force_delete         = true
-
 
   image_scanning_configuration {
     scan_on_push = true
   }
 }
-#ECR Setting
 
+# ECS Cluster
 resource "aws_ecs_cluster" "tech_challenge_cluster" {
   name = "tech_challenge_cluster"
 }
 
+# ECS Task Definition
 resource "aws_ecs_task_definition" "tech_challenge_client_task" {
   family                   = "tech_challenge_client_task"
   network_mode             = "awsvpc"
@@ -67,30 +118,24 @@ resource "aws_ecs_task_definition" "tech_challenge_client_task" {
   cpu                      = "256"
   memory                   = "512"
 
-  container_definitions = jsonencode(
-    [
-      {
-        name : "tech-challenge-client-container",
-        image : "tech-challenge-client:latest",
-        cpu : 256,
-        memory : 512,
-        essential : true,
-        portMappings : [
-          {
-            containerPort : 8080,
-            hostPort : 8080
-          }
-        ],
-        environment = [
-          { name = "AWS_ACCESS_KEY", value = var.aws_access_key},
-          { name = "AWS_SECRET_KEY", value = var.aws_secret_key },
-          { name = "AWS_REGION", value = var.aws_region }
-        ]
-      }
-    ]
-  )
+  container_definitions = jsonencode([
+    {
+      name        : "tech-challenge-client-container",
+      image       : "tech-challenge-client:latest",
+      cpu         : 256,
+      memory      : 512,
+      essential   : true,
+      portMappings: [
+        {
+          containerPort: 8080,
+          hostPort      : 8080
+        }
+      ]
+    }
+  ])
 }
 
+# ECS Service
 resource "aws_ecs_service" "tech_challenge_service" {
   name            = "tech-challenge-client-service"
   cluster         = aws_ecs_cluster.tech_challenge_cluster.id
@@ -102,4 +147,3 @@ resource "aws_ecs_service" "tech_challenge_service" {
     security_groups = [module.main_vpc.default_security_group_id]
   }
 }
-#ECS Setting
