@@ -33,14 +33,14 @@ jobs:
       - name: Create ECR repository if it does not exist
         id: create-repo
         run: |
-          aws ecr describe-repositories --repository-names my-app || aws ecr create-repository --repository-name my-app
+          aws ecr describe-repositories --repository-names tc-ms-client || aws ecr create-repository --repository-name tc-ms-client
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
       - name: Build, tag, and push image to Amazon ECR
         run: |
-          docker build -t my-app .
-          docker tag my-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-app:latest
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-app:latest
+          docker build -t tc-ms-client .
+          docker tag tc-ms-client:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
