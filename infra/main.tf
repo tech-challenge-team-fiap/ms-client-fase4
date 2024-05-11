@@ -96,5 +96,10 @@ resource "aws_ecs_service" "tech_challenge_service" {
   network_configuration {
     subnets         = ["subnet-04715a6b7400f9757", "subnet-06f39bcc16f6bd4ce", "subnet-010e2a0f51a3d00bc"]
     security_groups = ["sg-0edafd1e8b0f706e9"]
+    assign_public_ip = true
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
