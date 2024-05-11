@@ -46,15 +46,15 @@ resource "aws_iam_user_policy_attachment" "ec2_policy_attachment" {
 #}
 
 # ECR Setting
-resource "aws_ecr_repository" "tech_challenge" {
-  name                 = "jaircmendes/techchallenge:tcclient"
-  image_tag_mutability = "MUTABLE"
-  force_delete         = true
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
+#resource "aws_ecr_repository" "tech_challenge" {
+#  name                 = "jaircmendes/techchallenge:tcclient"
+#  image_tag_mutability = "MUTABLE"
+#  force_delete         = true
+#
+#  image_scanning_configuration {
+#    scan_on_push = true
+#  }
+#}
 
 # ECS Cluster
 resource "aws_ecs_cluster" "tech_challenge_cluster" {
@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "tech_challenge_client_task" {
   container_definitions = jsonencode([
     {
       name        : "tech-challenge-client-container",
-      image       : "tech-challenge-client:latest",
+      image       : "jaircmendes/techchallenge:tcclient",
       cpu         : 256,
       memory      : 512,
       essential   : true,
