@@ -14,10 +14,10 @@ services:
     depends_on:
       - dynamodb
     environment:
-      AWS_ACCESS_KEY: "your_access_key"
-      AWS_SECRET_KEY: "your_secret_key"
-      AWS_REGION: "us-east-2"
-      AWS_DYNAMODB_ENDPOINT: "http://dynamodb:8000"
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      AWS_DYNAMODB_ENDPOINT: ${AWS_DYNAMODB_ENDPOINT}
 
   dynamodb:
     container_name: dynamodb-database
@@ -27,9 +27,9 @@ services:
     networks:
       - mynetwork
     environment:
-      AWS_ACCESS_KEY: "your_access_key"
-      AWS_SECRET_KEY: "your_secret_key"
-      AWS_REGION: "us-east-2"
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
 
 networks:
   mynetwork:

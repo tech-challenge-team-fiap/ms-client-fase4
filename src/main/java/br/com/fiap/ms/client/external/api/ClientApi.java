@@ -2,6 +2,7 @@ package br.com.fiap.ms.client.external.api;
 
 import br.com.fiap.ms.client.adapter.controller.ClientController;
 import br.com.fiap.ms.client.application.dto.ClientDto;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,10 @@ public class ClientApi {
         this.clientController = clientController;
     }
 
+    @GetMapping
+    public ResponseEntity<?> healthCheckApi(){
+        return ResponseEntity.ok("Api UP");
+    }
     @PostMapping
     public ResponseEntity<?> register(@RequestBody ClientDto clientDto) throws ThrowableProblem {
         return clientController.register(clientDto);
