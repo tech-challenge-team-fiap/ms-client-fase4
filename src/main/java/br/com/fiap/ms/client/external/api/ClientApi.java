@@ -19,7 +19,7 @@ public class ClientApi {
         this.clientController = clientController;
     }
 
-    @GetMapping
+    @GetMapping("check")
     public ResponseEntity<?> healthCheckApi(){
         return ResponseEntity.ok("Api UP");
     }

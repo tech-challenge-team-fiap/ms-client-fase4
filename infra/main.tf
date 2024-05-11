@@ -28,33 +28,6 @@ resource "aws_iam_user_policy_attachment" "ec2_policy_attachment" {
   user       = "jairmendes-dev"
   policy_arn = "arn:aws:iam::851725557582:policy/EC2CreateVpcPolicy"
 }
-#
-## VPC Setting
-#module "main_vpc" {
-#  source  = "terraform-aws-modules/vpc/aws"
-#  version = "5.5.3"
-#
-#  name            = "main_vpc"
-#  cidr            = "10.0.0.0/16"
-#  azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
-#  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-#  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-#
-#  enable_nat_gateway   = true
-#  single_nat_gateway   = true
-#  enable_dns_hostnames = true
-#}
-
-# ECR Setting
-#resource "aws_ecr_repository" "tech_challenge" {
-#  name                 = "jaircmendes/techchallenge:tcclient"
-#  image_tag_mutability = "MUTABLE"
-#  force_delete         = true
-#
-#  image_scanning_configuration {
-#    scan_on_push = true
-#  }
-#}
 
 # ECS Cluster
 resource "aws_ecs_cluster" "tech_challenge_cluster" {
@@ -78,8 +51,8 @@ resource "aws_ecs_task_definition" "tech_challenge_client_task" {
       essential   : true,
       portMappings: [
         {
-          containerPort: 8080,
-          hostPort      : 8080
+          containerPort: 3000,
+          hostPort     : 3000
         }
       ]
     }
