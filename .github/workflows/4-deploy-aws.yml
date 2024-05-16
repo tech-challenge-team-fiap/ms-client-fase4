@@ -1,22 +1,14 @@
 name: Build and Deploy AWS
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - feature/*
-  pull_request:
-    branches:
-      - main
-      - develop
   workflow_run:
-    workflows: [ "Docker Build And Deploy to AWS ECR" ]
+    workflows: ["Docker Build And Deploy to AWS ECR"]
     types:
       - completed
 
 jobs:
   build_aws:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,12 +16,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Check status workflow previous
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        run: echo "Worflow are sucess, next task"
-      - name: Other taks
-        run: echo "Starting next task"
-      - name: Configuration AWS credentials
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -39,7 +27,7 @@ jobs:
       - name: Find directory
         run: ls
 
-      - name: Deploy AWS
+      - name: Deploy to AWS
         run: |
           pwd
           whoami
@@ -47,6 +35,6 @@ jobs:
           chmod +x ./deploy.sh
           ./deploy.sh
 
-      - name: Deploy realizado com sucesso
+      - name: Deployment successful
         if: success()
         run: echo 'Deployment successful!'
