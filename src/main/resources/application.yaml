@@ -2,11 +2,3 @@ server:
   port: 8080
   servlet:
     context-path: /
-
-amazon:
-  aws:
-    access-key: "your_access_key"
-    secret-key: "your_secret_key"
-    region: "us-east-2"
-    dynamodb:
-      endpoint: "http://dynamodb:8000"
