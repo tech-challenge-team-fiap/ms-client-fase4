@@ -13,3 +13,9 @@ variable "aws_region" {
   type        = string
   default     = "us-east-2"
 }
+
+variable "aws_endpoint_dynamodb" {
+  description = "Endpoint Dynamodb"
+  type        = string
+  default     = "https://dynamodb.us-east-2.amazonaws.com"
+}

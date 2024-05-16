@@ -24,16 +24,6 @@ public class ClientApi {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientApi.class);
 
-
-    @Value("${amazon.aws.dynamodb.endpoint}")
-    private String awsEndpoint;
-    @Value("${amazon.aws.access-key}")
-    private String awsAccessKey;
-    @Value("${amazon.aws.secret-key}")
-    private String awsSecretKey;
-    @Value("${amazon.aws.region}")
-    private String awsRegion;
-
     @Autowired
     public ClientApi(ClientController clientController){
         this.clientController = clientController;
@@ -41,7 +31,12 @@ public class ClientApi {
 
     @GetMapping("check")
     public ResponseEntity<?> healthCheckApi(){
-        return ResponseEntity.ok("Api UP:" + DateTime.now());
+        String awsAccessKey = System.getenv("AWS_ACCESS_KEY");
+        String awsSecretKey = System.getenv("AWS_SECRET_KEY");
+        String awsRegion = System.getenv("AWS_REGION");
+        String awsEndpointDynamoDB = System.getenv("AWS_ENDPOINT_DYNAMODB");
+
+        return ResponseEntity.ok("Api UP:" + awsAccessKey + " - " + awsSecretKey + " - " + awsRegion + " - " + awsEndpointDynamoDB );
     }
     @PostMapping
     public ResponseEntity<?> register(@RequestBody ClientDto clientDto) throws ThrowableProblem {

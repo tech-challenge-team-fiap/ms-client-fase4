@@ -14,11 +14,18 @@ resource "aws_ecs_cluster" "tc_ms_client_cluster" {
   }
 }
 
+# Definindo os valores das variáveis
+locals {
+  aws_access_key = var.aws_region
+  aws_secret_key = var.aws_secret_key
+  aws_endpoint_dynamodb  = var.aws_endpoint_dynamodb
+}
+
 resource "aws_ecs_task_definition" "tc_ms_client_task" {
   family                   = "tc-ms-client-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = data.aws_iam_role.existing_ecs_execution_role.arn
   cpu                      = 512
   memory                   = 1024
 
@@ -45,6 +52,24 @@ resource "aws_ecs_task_definition" "tc_ms_client_task" {
             containerPort = 8080
             hostPort      = 8080
             protocol      = "tcp"
+          }
+        ],
+        environment: [
+          {
+            name: "AWS_ACCESS_KEY",
+            value: var.aws_access_key
+          },
+          {
+            name: "AWS_SECRET_KEY",
+            value: var.aws_secret_key
+          },
+          {
+            name: "AWS_REGION",
+            value: var.aws_region
+          },
+          {
+            name: "AWS_ENDPOINT_DYNAMODB",
+            value: var.aws_endpoint_dynamodb
           }
         ]
       }
@@ -88,11 +113,19 @@ resource "aws_security_group" "tc_ms_client_sg" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
-  role       = aws_iam_role.ecs_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+data "aws_iam_role" "existing_ecs_execution_role" {
+  name = "ecs_execution_role"
 }
 
+resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
+  role       = data.aws_iam_role.existing_ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+#resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
+#  role       = aws_iam_role.ecs_execution_role.name
+#  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+#}
+#
 #resource "aws_iam_role" "ecs_execution_role" {
 #  name = "ecs_execution_role"
 #
