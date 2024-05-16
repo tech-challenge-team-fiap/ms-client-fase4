@@ -14,10 +14,11 @@ services:
     depends_on:
       - dynamodb
     environment:
-      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_REGION: ${AWS_REGION}
-      AWS_DYNAMODB_ENDPOINT: ${AWS_DYNAMODB_ENDPOINT}
+      aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+      aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+      aws-region: ${AWS_REGION}
+      aws-dynamo-endpoint: ${AWS_DYNAMODB_ENDPOINT}
+
 
   dynamodb:
     container_name: dynamodb-database

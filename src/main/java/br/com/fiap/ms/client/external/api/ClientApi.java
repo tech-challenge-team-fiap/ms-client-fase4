@@ -2,17 +2,36 @@ package br.com.fiap.ms.client.external.api;
 
 import br.com.fiap.ms.client.adapter.controller.ClientController;
 import br.com.fiap.ms.client.application.dto.ClientDto;
+import br.com.fiap.ms.client.external.configuration.DynamoDBConfiguration;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.zalando.problem.ThrowableProblem;
+import software.amazon.awssdk.services.ssm.SsmClient;
+import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
+import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientApi {
 
     private final ClientController clientController;
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientApi.class);
+
+
+    @Value("${amazon.aws.dynamodb.endpoint}")
+    private String awsEndpoint;
+    @Value("${amazon.aws.access-key}")
+    private String awsAccessKey;
+    @Value("${amazon.aws.secret-key}")
+    private String awsSecretKey;
+    @Value("${amazon.aws.region}")
+    private String awsRegion;
 
     @Autowired
     public ClientApi(ClientController clientController){
