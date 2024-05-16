@@ -1,20 +1,28 @@
 name: Docker Build And Deploy to AWS ECR
 
 on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
   workflow_run:
-    workflows: ["Check Quality with SonarCloud"]
+    workflows: [ "Check Quality with SonarCloud" ]
     types:
       - completed
 
 jobs:
   build-and-push:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: Check status workflow previous
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Worflow are sucess, next task"
+      - name: Other taks
+        run: echo "Starting next task"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -24,7 +32,7 @@ jobs:
 
       - name: Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
       - name: Create ECR repository if it does not exist
         id: create-repo
@@ -36,7 +44,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           docker build -t tc-ms-client .
-          docker tag tc-ms-client:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
+          docker tag tc-ms-client:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/tc-ms-client:latest
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
