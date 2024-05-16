@@ -1,11 +1,6 @@
 name: Docker Build And Deploy to AWS ECR
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - feature/*
   workflow_run:
     workflows: ["Check Quality with SonarCloud"]
     types:

@@ -1,12 +1,6 @@
 name: Check Quality with SonarCloud
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - feature/*
-
   workflow_run:
     workflows: ["Step Build and Test"]
     types:
