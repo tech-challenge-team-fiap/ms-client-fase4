@@ -4,6 +4,7 @@ import br.com.fiap.ms.client.adapter.controller.ClientController;
 import br.com.fiap.ms.client.application.dto.ClientDto;
 import br.com.fiap.ms.client.external.configuration.DynamoDBConfiguration;
 import org.apache.http.HttpStatus;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ClientApi {
 
     @GetMapping("check")
     public ResponseEntity<?> healthCheckApi(){
-        return ResponseEntity.ok("Api UP");
+        return ResponseEntity.ok("Api UP:" + DateTime.now());
     }
     @PostMapping
     public ResponseEntity<?> register(@RequestBody ClientDto clientDto) throws ThrowableProblem {
