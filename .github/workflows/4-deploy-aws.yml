@@ -41,6 +41,7 @@ jobs:
           aws ssm put-parameter --name "/msclient/AWS-DYNAMO-ENDPOINT" --value "${{ secrets.AWS_DYNAMODB_ENDPOINT }}" --type String --overwrite
           aws ssm put-parameter --name "/msclient/AWS_ACCESS_KEY_ID" --value "${{ secrets.AWS_ACCESS_KEY_ID }}" --type String --overwrite
           aws ssm put-parameter --name "/msclient/AWS_SECRET_ACCESS_KEY" --value "${{ secrets.AWS_SECRET_ACCESS_KEY }}" --type String --overwrite
+          aws ssm put-parameter --name "/msclient/AWS_VPC_ID" --value "${{ secrets.AWS_VPC_ID }}" --type String --overwrite
 
       - name: Find directory
         run: ls

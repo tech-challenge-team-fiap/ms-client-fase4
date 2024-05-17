@@ -1,9 +1,3 @@
-provider "aws" {
-  region = "us-east-2"
-}
-
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 resource "aws_ecs_cluster" "tc_ms_client_cluster" {
   name = "tc-ms-client-cluster"
@@ -57,11 +51,11 @@ resource "aws_ecs_task_definition" "tc_ms_client_task" {
         environment: [
           {
             name: "AWS_ACCESS_KEY",
-            value: var.aws_access_key
+            value: data.aws_ssm_parameter.aws_access_key_id_param.value
           },
           {
             name: "AWS_SECRET_KEY",
-            value: var.aws_secret_key
+            value: data.aws_ssm_parameter.aws_secret_key_param.value
           },
           {
             name: "AWS_REGION",
@@ -69,7 +63,7 @@ resource "aws_ecs_task_definition" "tc_ms_client_task" {
           },
           {
             name: "AWS_ENDPOINT_DYNAMODB",
-            value: var.aws_endpoint_dynamodb
+            value: data.aws_ssm_parameter.aws_dynamo_url_endpoint_param.value
           }
         ]
       }
