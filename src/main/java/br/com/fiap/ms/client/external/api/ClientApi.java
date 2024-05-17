@@ -31,12 +31,7 @@ public class ClientApi {
 
     @GetMapping("check")
     public ResponseEntity<?> healthCheckApi(){
-        String awsAccessKey = System.getenv("AWS_ACCESS_KEY");
-        String awsSecretKey = System.getenv("AWS_SECRET_KEY");
-        String awsRegion = System.getenv("AWS_REGION");
-        String awsEndpointDynamoDB = System.getenv("AWS_ENDPOINT_DYNAMODB");
-
-        return ResponseEntity.ok("Api UP:" + awsAccessKey + " - " + awsSecretKey + " - " + awsRegion + " - " + awsEndpointDynamoDB );
+        return ResponseEntity.ok("Api UP");
     }
     @PostMapping
     public ResponseEntity<?> register(@RequestBody ClientDto clientDto) throws ThrowableProblem {
