@@ -133,6 +133,7 @@
 								<exclude>**/infrastructure/entities/*</exclude>
 								<exclude>**/domain/interfaces/*</exclude>
 								<exclude>**/domain/model/*</exclude>
+								<exclude>**/external/infrastructure/entities/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
