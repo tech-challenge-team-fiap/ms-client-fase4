@@ -130,6 +130,9 @@
 								<exclude>**/configuration/*</exclude>
 								<exclude>**/utils/*</exclude>
 								<exclude>**/infrastructure/repositories/*</exclude>
+								<exclude>**/infrastructure/entities/*</exclude>
+								<exclude>**/domain/interfaces/*</exclude>
+								<exclude>**/domain/model/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
