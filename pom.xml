@@ -128,6 +128,7 @@
                             				</formats>
 							<excludes>
 								<exclude>**/configuration/*</exclude>
+								<exclude>**/utils/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
