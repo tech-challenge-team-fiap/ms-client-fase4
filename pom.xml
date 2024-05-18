@@ -129,6 +129,7 @@
 							<excludes>
 								<exclude>**/configuration/*</exclude>
 								<exclude>**/utils/*</exclude>
+								<exclude>**/infrastructure/repositories/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
