@@ -96,3 +96,4 @@ Os testes utilizam Mockito para simular o comportamento dos objetos e verificar 
 - [Samuel Almeida](https://github.com/orgs/tech-challenge-team-fiap/people/samucatezu)
 - [Jair Cavalcante](https://github.com/orgs/tech-challenge-team-fiap/people/jaircavalcante)
 - [Diego Fontgalland](https://github.com/orgs/tech-challenge-team-fiap/people/fontgalland)
+
