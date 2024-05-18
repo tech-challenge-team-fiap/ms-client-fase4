@@ -126,6 +126,11 @@
                             				<formats>
                                 				<format>XML</format>
                             				</formats>
+							<excludes>
+								<exclude>br.com.fiap.ms/client/external/configuration/*</exclude>
+								<exclude>br.com.fiap.ms/client/domain/utils/*</exclude>
+								<exclude>br.com.fiap.ms/client/domain/model/*</exclude>
+							</excludes>
                         			</configuration>
                     			</execution>
                 		</executions>
