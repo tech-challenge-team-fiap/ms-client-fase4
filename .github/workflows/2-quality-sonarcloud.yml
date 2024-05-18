@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - feature/*
   workflow_run:
     workflows: ["Step Build and Test"]
     types:
