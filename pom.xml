@@ -127,9 +127,7 @@
                                 				<format>XML</format>
                             				</formats>
 							<excludes>
-								<exclude>src/main/java/br/com/fiap/ms/client/domain/model/*</exclude>
-								<exclude>**/client/domain/utils/*</exclude>
-								<exclude>**/client/domain/model/*</exclude>
+								<exclude>**/configuration/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
