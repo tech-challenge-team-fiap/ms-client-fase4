@@ -1,0 +1,59 @@
+name: Build and Deploy AWS
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_run:
+    workflows: [ "Docker Build And Deploy to AWS ECR" ]
+    types:
+      - completed
+
+jobs:
+  build_aws:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Check status workflow previous
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Worflow are sucess, next task"
+      - name: Other taks
+        run: echo "Starting next task"
+      - name: Configuration AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set Parameter Store values
+        run: |
+          aws ssm put-parameter --name "/msclient/AWS_REGION" --value "${{ secrets.AWS_REGION }}" --type String --overwrite
+          aws ssm put-parameter --name "/msclient/AWS-DYNAMO-ENDPOINT" --value "${{ secrets.AWS_DYNAMODB_ENDPOINT }}" --type String --overwrite
+          aws ssm put-parameter --name "/msclient/AWS_ACCESS_KEY_ID" --value "${{ secrets.AWS_ACCESS_KEY_ID }}" --type String --overwrite
+          aws ssm put-parameter --name "/msclient/AWS_SECRET_ACCESS_KEY" --value "${{ secrets.AWS_SECRET_ACCESS_KEY }}" --type String --overwrite
+          aws ssm put-parameter --name "/msclient/AWS_VPC_ID" --value "${{ secrets.AWS_VPC_ID }}" --type String --overwrite
+
+      - name: Find directory
+        run: ls
+
+      - name: Deploy AWS
+        run: |
+          pwd
+          whoami
+          ls -al
+          chmod +x ./deploy.sh
+          ./deploy.sh
+
+      - name: Deploy realizado com sucesso
+        if: success()
+        run: echo 'Deployment successful!'
