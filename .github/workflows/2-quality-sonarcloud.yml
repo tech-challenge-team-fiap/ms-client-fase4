@@ -31,6 +31,9 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+          
+      - name: JaCoCo Report
+        uses: Madrapps/jacoco-report@v1.6.1
 
       - name: Cache Maven packages
         uses: actions/cache@v3
