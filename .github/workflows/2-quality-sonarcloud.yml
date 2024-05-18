@@ -34,7 +34,11 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
           
       - name: JaCoCo Report
-        uses: Madrapps/jacoco-report@v1.6.1
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: 
+            ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Maven packages
         uses: actions/cache@v3
