@@ -33,6 +33,9 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
           
+      - name: Run Test
+        run: mvn test
+          
       - name: JaCoCo Report
         uses: madrapps/jacoco-report@v1.6.1
         with:
