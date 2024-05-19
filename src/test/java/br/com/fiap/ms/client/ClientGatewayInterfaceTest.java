@@ -36,6 +36,13 @@ public class ClientGatewayInterfaceTest {
     }
 
     @Test
+    void testThrowRegister() throws InvalidClientProcessException {
+        when(clientGateway.register(client)).thenThrow(InvalidClientProcessException.class);
+
+        assertThrows(InvalidClientProcessException.class, () -> clientGateway.register(client));
+    }
+
+    @Test
     void testUpdate() throws InvalidClientProcessException {
         when(clientGateway.update(clientDto)).thenReturn(clientDto);
         ClientDto result = clientGateway.update(clientDto);
