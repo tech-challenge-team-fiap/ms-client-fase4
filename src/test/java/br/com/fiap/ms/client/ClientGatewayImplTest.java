@@ -1,8 +1,10 @@
 package br.com.fiap.ms.client;
 
 import br.com.fiap.ms.client.application.dto.ClientDto;
+import br.com.fiap.ms.client.domain.exception.client.ClientAlreadyExistsException;
 import br.com.fiap.ms.client.domain.exception.client.ClientNotFoundException;
 import br.com.fiap.ms.client.domain.exception.client.InvalidClientProcessException;
+import br.com.fiap.ms.client.domain.exception.client.InvalidCpfException;
 import br.com.fiap.ms.client.domain.model.Client;
 import br.com.fiap.ms.client.external.infrastructure.entities.ClientDB;
 import br.com.fiap.ms.client.external.infrastructure.gateway.ClientGatewayImpl;
@@ -12,7 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,6 +31,9 @@ class ClientGatewayImplTest {
 
     @InjectMocks
     private ClientGatewayImpl clientGateway;
+
+    @Mock
+    private Logger logger;
 
     @BeforeEach
     void setUp() {
@@ -115,5 +124,82 @@ class ClientGatewayImplTest {
         assertThrows(ClientNotFoundException.class, () -> clientGateway.findByDocument(cpf));
     }
 
-    // Add more tests for listFindAll, findByCpf, and findByDocument as needed.
+    @Test
+    public void testListFindAllEmpty() {
+        // Given
+        when(clientRepository.listFindAll()).thenReturn(Arrays.asList());
+
+        // When
+        List<ClientDto> result = clientGateway.listFindAll();
+
+        // Then
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(clientRepository, times(1)).listFindAll();
+    }
+
+    @Test
+    public void testListFindAllNotEmpty() {
+        // Given
+
+        ClientDto client1 = new ClientDto("1", "John Doe", "123456789", "john@example.com", "1234567890");
+        ClientDto client2  = new ClientDto("2", "John Doe2", "123456789", "john@example.com", "1234567890");
+        when(clientRepository.listFindAll()).thenReturn((List<ClientDto>) Arrays.asList(client1, client2));
+
+        // When
+        List<ClientDto> result = clientGateway.listFindAll();
+
+        // Then
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
+        verify(clientRepository, times(1)).listFindAll();
+    }
+
+    @Test
+    public void testListFindAllWithNullClients() {
+        // Given
+        ClientDto client1 = new ClientDto("1", "John Doe", "123456789", "john@example.com", "1234567890");
+        ClientDto client2 = null;
+        when(clientRepository.listFindAll()).thenReturn((List<ClientDto>) Arrays.asList(client1, client2));
+
+        // When
+        List<ClientDto> result = clientGateway.listFindAll();
+
+        // Then
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(clientRepository, times(1)).listFindAll();
+    }
+
+    @Test
+    public void testFindByCpfValidClientExist() {
+        // Given
+        String validCpf = "12345678900";
+        when(clientRepository.findByCpf(validCpf)).thenReturn(Optional.of(new ClientDB()));
+
+        // When & Then
+        assertThrows(InvalidCpfException.class, () -> clientGateway.findByCpf(validCpf));
+    }
+
+    @Test
+    public void testFindByCpfInvalidCpf() {
+        // Given
+        String invalidCpf = "1234567890"; // CPF inválido
+        // No need to mock repository call, as it should not be called due to the invalid CPF
+
+        // When & Then
+        assertThrows(InvalidClientProcessException.class, () -> clientGateway.findByCpf(invalidCpf));
+        verifyNoInteractions(clientRepository);
+    }
+
+    @Test
+    public void testFindByCpfClientAlreadyExistsException() {
+        // Given
+        String validCpf = "12345678900";
+        when(clientRepository.findByCpf(validCpf)).thenReturn(Optional.of(new ClientDB()));
+
+        // When & Then
+        assertThrows(InvalidCpfException.class, () -> clientGateway.findByCpf(validCpf));
+    }
 }
