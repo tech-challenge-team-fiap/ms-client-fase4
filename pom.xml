@@ -138,6 +138,7 @@
 								<exclude>**/client/domain/validation/*</exclude>
 								<exclude>**/client/application/dto/*</exclude>
 								<exclude>**/client/domain/interfaces/abstracts/*</exclude>
+								<exclude>**/client/ClientMSApplication.java</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
