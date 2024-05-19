@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>br.com.fiap</groupId>
+	<artifactId>ms.client</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ms.client</name>
+	<description>Desafio desenvolvido com ECS e Clean-Architecture para a fase04 do curso de Software Architecture da FIAP Pós Tech.</description>
+
+	<properties>
+		<java.version>17</java.version>
+		<org.mockito.version>5.3.1</org.mockito.version>
+		<zalando.version>0.29.1</zalando.version>
+		<sonar.organization>tech-challenge-team-fiap</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  		<sonar.coverage.jacoco.xmlReportPaths>
+    			../target/site/jacoco/jacoco.xml
+  		</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${org.mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.zalando</groupId>
+			<artifactId>problem-spring-web</artifactId>
+			<version>${zalando.version}</version>
+		</dependency>
+
+		<!-- AWS DYNAMODB AND AWS SDK-->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>1.12.705</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.derjust</groupId>
+			<artifactId>spring-data-dynamodb</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.12.705</version>
+		</dependency>
+
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>ssm</artifactId>
+			<version>2.17.69</version> <!-- Versão atualizada disponível -->
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+		<dependency>
+    			<groupId>org.jacoco</groupId>
+    			<artifactId>jacoco-maven-plugin</artifactId>
+    			<version>0.8.12</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+                		<groupId>org.jacoco</groupId>
+                		<artifactId>jacoco-maven-plugin</artifactId>
+                		<version>0.8.7</version>
+                		<executions>
+                   			 <execution>
+                        			<id>prepare-agent</id>
+                        			<goals>
+                            				<goal>prepare-agent</goal>
+                        			</goals>
+                    			</execution>
+                    			<execution>
+                        			<id>report</id>
+                        			<goals>
+                            				<goal>report</goal>
+                        			</goals>
+                        			<configuration>
+                            				<formats>
+                                				<format>XML</format>
+                            				</formats>
+							<excludes>
+								<exclude>**/configuration/*</exclude>
+								<exclude>**/utils/*</exclude>
+								<exclude>**/infrastructure/repositories/*</exclude>
+								<exclude>**/infrastructure/entities/*</exclude>
+								<exclude>**/domain/interfaces/*</exclude>
+								<exclude>**/domain/model/*</exclude>
+								<exclude>**/external/infrastructure/entities/*</exclude>
+								<exclude>**/client/domain/validation/*</exclude>
+								<exclude>**/client/domain/validation/*</exclude>
+								<exclude>**/client/application/dto/*</exclude>
+								<exclude>**/client/domain/interfaces/abstracts/*</exclude>
+								<exclude>**/client/ClientMSApplication.java</exclude>
+							</excludes>
+                        			</configuration>
+                    			</execution>
+                		</executions>
+            		</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<release>17</release> <!-- Defina a versão do Java que você está usando -->
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>ms-client-api-docker</finalName>
+	</build>
+</project>

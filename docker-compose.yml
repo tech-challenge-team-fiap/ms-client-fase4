@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  tech-challenge-client:
+    container_name: api-clients
+    image: openjdk:17-jdk
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - dynamodb
+    environment:
+      aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+      aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+      aws-region: ${AWS_REGION}
+      aws-dynamo-endpoint: ${AWS_DYNAMODB_ENDPOINT}
+
+
+  dynamodb:
+    container_name: dynamodb-database
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+    environment:
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+
+networks:
+  mynetwork:
+    driver: bridge
