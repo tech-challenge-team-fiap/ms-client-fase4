@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - feature/*
   workflow_run:
     workflows: ["Step Build and Test"]
     types:
@@ -31,6 +32,16 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+          
+      - name: Run Test
+        run: mvn test
+          
+      - name: JaCoCo Report
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: 
+            ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Maven packages
         uses: actions/cache@v3
