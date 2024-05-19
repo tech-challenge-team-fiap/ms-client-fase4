@@ -47,6 +47,16 @@ class ClientControllerTest {
     }
 
     @Test
+    void shouldThrowOnEdit() throws InvalidClientProcessException {
+        ClientDto clientDto = new ClientDto("123");
+
+        when(clientUseCaseInterface.edit(clientDto)).thenThrow(InvalidClientProcessException.class);
+
+        var response = controller.edit(clientDto);
+        assertNotNull(response);
+    }
+
+    @Test
     void shouldRemove() {
         var response = controller.remove("11111111111");
         assertNotNull(response);
