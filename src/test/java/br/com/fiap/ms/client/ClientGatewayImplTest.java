@@ -202,4 +202,15 @@ class ClientGatewayImplTest {
         // When & Then
         assertThrows(InvalidCpfException.class, () -> clientGateway.findByCpf(validCpf));
     }
+
+    @Test
+    public void testRegisterClientWithException() throws InvalidClientProcessException {
+        // Given
+        Client client = new Client(); // Suponha que a construção do cliente seja válida
+        ClientDB clientDb = mock(ClientDB.class);
+        doThrow(new RuntimeException("Database error")).when(clientRepository).save(any(ClientDB.class));
+
+        // When & Then
+        assertThrows(RuntimeException.class, () -> clientGateway.register(client));
+    }
 }
