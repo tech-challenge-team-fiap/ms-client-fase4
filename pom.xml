@@ -137,6 +137,7 @@
 								<exclude>**/client/domain/validation/*</exclude>
 								<exclude>**/client/domain/validation/*</exclude>
 								<exclude>**/client/application/dto/*</exclude>
+								<exclude>**/client/domain/interfaces/abstracts/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
