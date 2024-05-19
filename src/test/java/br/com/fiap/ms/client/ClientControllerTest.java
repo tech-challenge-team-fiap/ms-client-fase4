@@ -39,7 +39,7 @@ class ClientControllerTest {
     void shouldEdit() {
         ClientDto clientDto = new ClientDto("123");
 
-        var response = subject.register(clientDto);
+        var response = subject.edit(clientDto);
         assertNotNull(response);
     }
 
