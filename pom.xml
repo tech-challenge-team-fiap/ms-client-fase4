@@ -134,6 +134,9 @@
 								<exclude>**/domain/interfaces/*</exclude>
 								<exclude>**/domain/model/*</exclude>
 								<exclude>**/external/infrastructure/entities/*</exclude>
+								<exclude>**/client/domain/validation/*</exclude>
+								<exclude>**/client/domain/validation/*</exclude>
+								<exclude>**/client/application/dto/*</exclude>
 							</excludes>
                         			</configuration>
                     			</execution>
